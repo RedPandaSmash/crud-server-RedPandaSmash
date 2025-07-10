@@ -37,28 +37,32 @@ async function start() {
     let robotName = await ask("Designate this robot?");
     let robotColor = await ask("What color is this robot?");
     let friend = await ask("Is this robot a friend? Enter Y or N");
+
+    let killer;
+    if (friend === "N") {
+      friend = false;
+      killer = true;
+      console.log("Oh no! A killer robot!");
+    } else {
+      friend = true;
+      killer = false;
+    }
+    let serialNumber = await ask("What is the serial number?");
+    let date = new Date();
+
+    const response = new Robot({
+      creatorName: creatorName,
+      robotName: robotName,
+      robotColor: robotColor,
+      friend: friend || true,
+      killer: killer || false,
+      serialNumber: serialNumber,
+      date: date,
+    });
+
+    await response.save();
+    console.log("Your robot has been created!");
   }
-
-  if (friend === "N") {
-    friend = false;
-    killer = true;
-    console.log("Oh no! A killer robot!");
-    serialNumber = await ask("What is the serial number?");
-    date = new Date();
-  }
-
-  const response = new Robot({
-    creatorName: creatorName,
-    robotName: robotName,
-    robotColor: robotColor,
-    friend: friend || null,
-    killer: killer || null,
-    serialNumber: serialNumber,
-    date: date,
-  });
-
-  await response.save();
-  console.log("Your robot has been created!");
 }
 
 start();
