@@ -62,8 +62,34 @@ async function start() {
 
     await response.save();
     console.log("Your robot has been created!");
+  } else if (action === "Read") {
+    let allRobots = await Robot.find({});
+    console.log(allRobots);
+  } else if (action === "Update") {
+    let allRobots = await Robot.find({});
+    console.log(allRobots);
+    let updateTarget = await ask(
+      "What is the ID of the robot you want to update?   "
+    );
+    let updateField = await ask("What field do you want to update?   ");
+    let update = await ask("Enter a new value   ");
+    await Robot.updateOne(
+      { _id: updateTarget },
+      { $set: { [updateField]: update } }
+    );
+    console.log("Your robot has been updated!");
+  } else if (action === "Delete") {
+    let allRobots = await Robot.find({});
+    console.log(allRobots);
+    let target = await ask(
+      "what is the ID of the entry do you want to delete?   "
+    );
+    await Robot.deleteOne({ _id: target });
+    console.log("your entry has been deleted");
+  } else {
+    console.log("invalid entry, try again");
   }
-  
+  process.exit();
 }
 
 start();
